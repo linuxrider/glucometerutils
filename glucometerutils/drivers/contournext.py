@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# SPDX-FileCopyrightText: © 2019 The glucometerutils Authors
+# SPDX-FileCopyrightText: © 2026 The glucometerutils Authors
 # SPDX-License-Identifier: MIT
-"""Driver for ContourUSB devices.
+"""Driver for Contour Next devices.
 
 Supported features:
     - get readings (blood glucose), including comments;
@@ -38,19 +38,19 @@ def _extract_timestamp(parsed_record: dict[str, str]):
 
 
 class Device(contourusb.ContourHidDevice):
-    """Glucometer driver for Contour USB devices."""
+    """Glucometer driver for Contour Next devices."""
 
     def __init__(self, device: Optional[str]) -> None:
         super().__init__(
-            (0x1A79, 0x6002),
+            (0x1A79, 0x7900),
             device,
-            header_record_re=contourusb._HEADER_RECORD_RE_USB,
+            header_record_re=contourusb._HEADER_RECORD_RE_NEXT,
         )
 
     def get_meter_info(self) -> common.MeterInfo:
         self._get_info_record()
         return common.MeterInfo(
-            "Contour USB",
+            "Contour Next",
             serial_number=self._get_serial_number(),
             version_info=("Meter versions: " + self._get_version(),),
             native_unit=self.get_glucose_unit(),
